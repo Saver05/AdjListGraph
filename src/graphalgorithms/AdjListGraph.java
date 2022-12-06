@@ -1,7 +1,9 @@
 
 package graphalgorithms;
 import java.util.Arrays;
-
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
 /**
  * @author Jack Frambes  <<<<---------------
  * Modified the code
@@ -139,12 +141,10 @@ public class AdjListGraph {
      */
     public AdjListGraph(int numVertex, int[][] edges) {
         adjList = new Vertex[numVertex];
-        //iterate over adjList filling in each spot with a vertex object
         for (int i=0;i<numVertex;i++)
         {
             adjList[i] = new Vertex(i);
         }
-        //iterate over edges array and add each edge to the adj list
         for (int i =0;i< edges.length;i++)
         {
             addEdge(edges[i][0],edges[i][1],edges[i][2]);
@@ -192,7 +192,7 @@ public class AdjListGraph {
      */
     public void addEdge(int vertex1, int vertex2, int weight)
     {
-        if (adjList[vertex1].neighbors == null)
+        if (adjList[vertex1].neighbors == null) //checks to make sure the linked-list is actually initialized
         {
             adjList[vertex1].neighbors = new Node(vertex2,weight,null);
         }
@@ -201,7 +201,7 @@ public class AdjListGraph {
             Node after = findNodeInsertAfter(adjList[vertex1].neighbors,weight);
             after.next = new Node(vertex2,weight,after.next);
         }
-        if (adjList[vertex2].neighbors == null)
+        if (adjList[vertex2].neighbors == null) //checks to make sure the linked-list is actually initialized
         {
             adjList[vertex2].neighbors = new Node(vertex1,weight,null);
         }
@@ -233,9 +233,30 @@ public class AdjListGraph {
      * @return a string representation of the order in which the vertex were
      *                  visited with square brackets around it.
      */
-    public String breathFirstTraversal(){
-        
-        return "";
+    public String breathFirstTraversal()
+    {
+        String r = "[ ";
+        Queue<Vertex> q = new LinkedList<>();
+        unMarkAll();
+        adjList[0].marked = true;
+        r = r +" "+ adjList[0].label;
+        q.add(adjList[0]);
+        while (!q.isEmpty())
+        {
+            Vertex v =q.poll();
+            Node n = v.neighbors.next;
+            while (n != null)
+            {
+                if (!adjList[n.value].marked)
+                {
+                    adjList[n.value].marked = true;
+                    q.add(adjList[n.value]);
+                    r = r + " " + adjList[n.value].label;
+                }
+                n = n.next;
+            }
+        }
+        return r+" ]";
     }
     
      /**
@@ -246,8 +267,10 @@ public class AdjListGraph {
      * @return a string representation of the order in which the vertex were
      * visited.
      */   
-    public String depthFirstTraversal(){
-        
+    public String depthFirstTraversal()
+    {
+        String r = "[ ";
+
         return "";
     }
     
