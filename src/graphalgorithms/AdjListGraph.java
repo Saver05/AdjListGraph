@@ -75,7 +75,6 @@ public class AdjListGraph {
         System.out.println("       DFT is: " + g2.depthFirstTraversal() +"\n");
         System.out.println("BFT should be: <YOU FILL IN> \n");
         System.out.println("       BFT is: " + g2.breathFirstTraversal() + "\n");
-        System.out.println("       BFT is: " + g2.breathFirstTraversal() + "\n");
         System.out.println("MST should be: <YOU FILL IN> \n");
         System.out.println("       MST is: " + g2.minSpanningTree() + "\n");
         System.out.println("Dijkstrs should be: <YOU FILL IN> \n");
@@ -269,9 +268,33 @@ public class AdjListGraph {
      */   
     public String depthFirstTraversal()
     {
-        String r = "[ ";
-
-        return "";
+        String r = "[";
+        Stack<Vertex> s = new Stack<>();
+        unMarkAll();
+        for (int st =0;st<adjList.length;st++)
+        {
+            if (!adjList[st].marked)
+            {
+                s.push(adjList[st]);
+                adjList[st].marked = true;
+            }
+            while(!s.isEmpty())
+            {
+                Vertex v = s.pop();
+                r = r + " " + v.label;
+                Node n = v.neighbors;
+                while (n != null)
+                {
+                    if (!adjList[n.value].marked)
+                    {
+                        s.push(adjList[n.value]);
+                        adjList[n.value].marked = true;
+                    }
+                    n = n.next;
+                }
+            }
+        }
+        return r+" ]";
     }
     
     /**
